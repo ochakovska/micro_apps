@@ -328,6 +328,132 @@
   }
   .retry-btn:hover { background: var(--primary-light); }
 
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--card-bg);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 560px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+  .modal-header {
+    padding: 22px 24px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .modal-header h2 { font-size: 1.15rem; color: var(--text); }
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: var(--text-muted);
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  .modal-close:hover { background: #f0f0f0; }
+  .modal-body { padding: 20px 24px 24px; }
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 5px;
+  }
+  .form-group label .required { color: var(--tag-labor); }
+  .form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.92rem;
+    font-family: inherit;
+    transition: border-color 0.2s;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+  .form-textarea { resize: vertical; min-height: 80px; }
+  .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+  .checkbox-label:has(input:checked) {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    color: var(--primary);
+  }
+  .checkbox-label input { display: none; }
+  .form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+  .btn-cancel {
+    padding: 10px 20px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    font-size: 0.92rem;
+    color: var(--text-muted);
+  }
+  .btn-cancel:hover { background: #f5f5f5; }
+  .btn-submit {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 8px;
+    background: var(--primary);
+    color: white;
+    font-size: 0.92rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-submit:hover { background: #14432a; }
+  .btn-submit:disabled {
+    background: #a0c4b0;
+    cursor: not-allowed;
+  }
+  .form-msg {
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    display: none;
+  }
+  .form-msg.success { display: block; background: #e8f5ec; color: var(--primary); }
+  .form-msg.error { display: block; background: #fde8e3; color: var(--tag-labor); }
+
   /* RESPONSIVE */
   @media (max-width: 640px) {
     .header h1 { font-size: 1.5rem; }
@@ -395,7 +521,7 @@
   <div class="suggest-cta">
     <h3>Know a resource that should be here?</h3>
     <p>Nominate a risk source you've found useful. Once 3+ members confirm they've used it professionally, it earns the "Community Verified" badge.</p>
-    <button class="suggest-btn">&#43; Suggest a Source</button>
+    <button class="suggest-btn" onclick="openSuggestModal()">&#43; Suggest a Source</button>
   </div>
 
   <!-- LEGEND -->
@@ -413,6 +539,80 @@
       <div class="legend-item">
         &#11088; = Average usefulness rating by members
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- SUGGEST SOURCE MODAL -->
+<div class="modal-overlay" id="suggestModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Suggest a Risk Source</h2>
+      <button class="modal-close" onclick="closeSuggestModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="suggestForm" onsubmit="submitSource(event)">
+        <div class="form-group">
+          <label>Source Name <span class="required">*</span></label>
+          <input type="text" class="form-input" name="name" required placeholder="e.g. Global Slavery Index">
+        </div>
+        <div class="form-group">
+          <label>Publisher / Organisation <span class="required">*</span></label>
+          <input type="text" class="form-input" name="publisher" required placeholder="e.g. Walk Free Foundation">
+        </div>
+        <div class="form-group">
+          <label>URL <span class="required">*</span></label>
+          <input type="url" class="form-input" name="url" required placeholder="https://...">
+        </div>
+        <div class="form-group">
+          <label>Description <span class="required">*</span></label>
+          <textarea class="form-textarea" name="description" required placeholder="Brief description of the source and its relevance to risk assessment..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Categories</label>
+          <div class="checkbox-group">
+            <label class="checkbox-label"><input type="checkbox" name="categories" value="Labour & Human Rights">Labour &amp; Human Rights</label>
+            <label class="checkbox-label"><input type="checkbox" name="categories" value="Environment">Environment</label>
+            <label class="checkbox-label"><input type="checkbox" name="categories" value="Governance">Governance</label>
+            <label class="checkbox-label"><input type="checkbox" name="categories" value="Multi-topic">Multi-topic</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Source Type</label>
+          <select class="form-select" name="sourceType">
+            <option value="">Select type...</option>
+            <option value="Index / Ranking">Index / Ranking</option>
+            <option value="Database">Database</option>
+            <option value="Map / Tool">Map / Tool</option>
+            <option value="Report">Report</option>
+            <option value="Registry">Registry</option>
+            <option value="Risk Assessment Tool">Risk Assessment Tool</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Cost</label>
+          <select class="form-select" name="cost">
+            <option value="">Select...</option>
+            <option value="Free">Free</option>
+            <option value="Freemium">Freemium</option>
+            <option value="Paid">Paid</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Geographic Scope</label>
+          <select class="form-select" name="scope">
+            <option value="">Select...</option>
+            <option value="Global">Global</option>
+            <option value="Regional">Regional</option>
+            <option value="National">National</option>
+          </select>
+        </div>
+        <div class="form-msg" id="formMsg"></div>
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" onclick="closeSuggestModal()">Cancel</button>
+          <button type="submit" class="btn-submit" id="submitBtn">Submit Source</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
@@ -623,6 +823,74 @@
     btn.innerHTML = panel.classList.contains('open')
       ? '&#9650; Hide highlights & changes'
       : '&#9660; Show highlights & changes';
+  }
+
+  // SUGGEST SOURCE MODAL
+  function openSuggestModal() {
+    document.getElementById('suggestModal').classList.add('open');
+  }
+
+  function closeSuggestModal() {
+    document.getElementById('suggestModal').classList.remove('open');
+    document.getElementById('suggestForm').reset();
+    const msg = document.getElementById('formMsg');
+    msg.className = 'form-msg';
+    msg.textContent = '';
+  }
+
+  // Close modal on overlay click
+  document.getElementById('suggestModal').addEventListener('click', function(e) {
+    if (e.target === this) closeSuggestModal();
+  });
+
+  async function submitSource(e) {
+    e.preventDefault();
+    const form = e.target;
+    const btn = document.getElementById('submitBtn');
+    const msg = document.getElementById('formMsg');
+
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+    msg.className = 'form-msg';
+    msg.textContent = '';
+
+    const categories = Array.from(form.querySelectorAll('input[name="categories"]:checked'))
+      .map(cb => cb.value);
+
+    const payload = {
+      name: form.name.value.trim(),
+      publisher: form.publisher.value.trim(),
+      url: form.url.value.trim(),
+      description: form.description.value.trim(),
+      categories,
+      sourceType: form.sourceType.value,
+      cost: form.cost.value,
+      scope: form.scope.value,
+    };
+
+    try {
+      const res = await fetch('/.netlify/functions/notion-add-source', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Submission failed');
+
+      msg.className = 'form-msg success';
+      msg.textContent = 'Source submitted! It will appear after review.';
+      form.reset();
+      setTimeout(() => {
+        closeSuggestModal();
+        fetchSources();
+      }, 2000);
+    } catch (err) {
+      msg.className = 'form-msg error';
+      msg.textContent = err.message;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Submit Source';
+    }
   }
 
   document.addEventListener('DOMContentLoaded', fetchSources);
