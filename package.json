@@ -1,0 +1,7 @@
+{
+  "name": "micro-apps",
+  "private": true,
+  "dependencies": {
+    "@notionhq/client": "^2.2.0"
+  }
+}

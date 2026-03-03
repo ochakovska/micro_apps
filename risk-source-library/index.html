@@ -293,6 +293,41 @@
   .legend-items { display: flex; flex-wrap: wrap; gap: 16px; }
   .legend-item { display: flex; align-items: center; gap: 6px; }
 
+  /* LOADING & ERROR */
+  .loading-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+    font-size: 1rem;
+  }
+  .loading-spinner {
+    width: 32px; height: 32px;
+    border: 3px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .error-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--tag-labor);
+    font-size: 0.95rem;
+  }
+  .retry-btn {
+    margin-top: 12px;
+    padding: 8px 20px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    font-size: 0.88rem;
+    color: var(--primary);
+  }
+  .retry-btn:hover { background: var(--primary-light); }
+
   /* RESPONSIVE */
   @media (max-width: 640px) {
     .header h1 { font-size: 1.5rem; }
@@ -309,9 +344,9 @@
   <h1>Community Risk Source Library</h1>
   <p>Curated risk assessment resources verified by sustainability professionals. Your starting point for due diligence under CSDDD, CS3D, and related legislation.</p>
   <div class="header-meta">
-    <span>&#128218; 12 Sources</span>
-    <span>&#9989; 8 Community Verified</span>
-    <span>&#128197; Last updated: Feb 2026</span>
+    <span id="header-total">&#128218; -- Sources</span>
+    <span id="header-verified">&#9989; -- Community Verified</span>
+    <span>&#128197; Live from Notion</span>
   </div>
 </div>
 
@@ -331,333 +366,28 @@
 <div class="main">
   <div class="stats-row">
     <div class="stat-card">
-      <div class="stat-number">12</div>
+      <div class="stat-number" id="stat-total">--</div>
       <div class="stat-label">Total Sources</div>
     </div>
     <div class="stat-card">
-      <div class="stat-number">8</div>
+      <div class="stat-number" id="stat-verified">--</div>
       <div class="stat-label">Community Verified</div>
     </div>
     <div class="stat-card">
-      <div class="stat-number">4</div>
-      <div class="stat-label">Updated in 2025/26</div>
+      <div class="stat-number" id="stat-updated">--</div>
+      <div class="stat-label">Updated Recently</div>
     </div>
     <div class="stat-card">
-      <div class="stat-number">47</div>
+      <div class="stat-number" id="stat-reviews">--</div>
       <div class="stat-label">Member Reviews</div>
     </div>
   </div>
 
-  <!-- SECTION: HIGH-PRIORITY / LEGISLATION-LINKED -->
-  <div class="section-label">Legislation-Linked &amp; High Priority</div>
-
-  <!-- Card 1 -->
-  <div class="card" data-category="labor" data-verified="true">
-    <div class="card-top">
-      <div>
-        <div class="card-title">
-          <a href="#">US DOL — List of Goods Produced by Child Labor or Forced Labor</a>
-          <span class="verified-badge"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Verified</span>
-        </div>
-        <div class="card-org">U.S. Department of Labor &middot; Bureau of International Labor Affairs</div>
-      </div>
-      <span class="changelog-badge">Updated Sep 2024</span>
-    </div>
-    <div class="card-desc">
-      Comprehensive list of goods and their source countries where there is reason to believe they are produced by child labor or forced labor. Covers 159 goods from 78 countries. Essential reference for supply chain risk screening.
-    </div>
-    <div class="card-tags">
-      <span class="tag tag-labor">Forced Labour</span>
-      <span class="tag tag-labor">Child Labour</span>
-      <span class="tag tag-type">Database / List</span>
-      <span class="tag tag-type">Free</span>
-    </div>
-    <button class="changelog-toggle" onclick="toggleChangelog(this)">&#9660; Show highlights &amp; changes</button>
-    <div class="changelog-panel">
-      <h4>Highlights &amp; Changes vs Previous Edition</h4>
-      <ul>
-        <li><strong>Sep 2024 update:</strong> Added 7 new goods, updated 12 country entries</li>
-        <li>Now includes cobalt (DRC) and lithium (multiple countries)</li>
-        <li>Strengthened methodology section with ILO alignment</li>
-        <li>Interactive map tool added to the online version</li>
-      </ul>
-    </div>
-    <div class="card-footer">
-      <div class="card-footer-left">
-        <span>&#128101; 14 members used this</span>
-        <span>&#11088; 4.8 / 5 usefulness</span>
-        <span>&#127760; Global scope</span>
-      </div>
-      <span>&#128279; dol.gov/agencies/ilab</span>
-    </div>
-  </div>
-
-  <!-- Card 2 -->
-  <div class="card" data-category="general" data-verified="true">
-    <div class="card-top">
-      <div>
-        <div class="card-title">
-          <a href="#">CSR Risk Check</a>
-          <span class="verified-badge"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Verified</span>
-        </div>
-        <div class="card-org">MVO Nederland (CSR Netherlands)</div>
-      </div>
-    </div>
-    <div class="card-desc">
-      Free online tool that maps CSR risks per product, sector, and country. Covers human rights, environment, and fair business. Excellent starting point for initial risk identification before deep-dive assessments.
-    </div>
-    <div class="card-tags">
-      <span class="tag tag-labor">Human Rights</span>
-      <span class="tag tag-environment">Environment</span>
-      <span class="tag tag-governance">Fair Business</span>
-      <span class="tag tag-type">Online Tool</span>
-      <span class="tag tag-type">Free</span>
-    </div>
-    <button class="changelog-toggle" onclick="toggleChangelog(this)">&#9660; Show highlights &amp; changes</button>
-    <div class="changelog-panel">
-      <h4>Highlights &amp; Changes</h4>
-      <ul>
-        <li>Aligned with OECD Guidelines and UNGPs</li>
-        <li>Covers 200+ product groups and 170+ countries</li>
-        <li>Useful for CSDDD Article 6 risk identification step</li>
-        <li>Recently added biodiversity-related risk indicators</li>
-      </ul>
-    </div>
-    <div class="card-footer">
-      <div class="card-footer-left">
-        <span>&#128101; 11 members used this</span>
-        <span>&#11088; 4.6 / 5 usefulness</span>
-        <span>&#127760; Global scope</span>
-      </div>
-      <span>&#128279; mvorisicochecker.nl</span>
-    </div>
-  </div>
-
-  <!-- Card 3 -->
-  <div class="card" data-category="labor" data-verified="true">
-    <div class="card-top">
-      <div>
-        <div class="card-title">
-          <a href="#">Global Slavery Index</a>
-          <span class="verified-badge"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Verified</span>
-        </div>
-        <div class="card-org">Walk Free Foundation &middot; Minderoo Foundation</div>
-      </div>
-      <span class="changelog-badge">Updated 2023</span>
-    </div>
-    <div class="card-desc">
-      Country-by-country estimates of modern slavery prevalence, government responses, and import risk. The "Products" section maps at-risk goods to importing countries — directly relevant for supply chain due diligence.
-    </div>
-    <div class="card-tags">
-      <span class="tag tag-labor">Modern Slavery</span>
-      <span class="tag tag-labor">Forced Labour</span>
-      <span class="tag tag-type">Index / Report</span>
-      <span class="tag tag-type">Free</span>
-    </div>
-    <button class="changelog-toggle" onclick="toggleChangelog(this)">&#9660; Show highlights &amp; changes</button>
-    <div class="changelog-panel">
-      <h4>Highlights &amp; Changes vs 2018 Edition</h4>
-      <ul>
-        <li>Expanded to 160 countries (from 167 in 2018, methodology refined)</li>
-        <li>New "importing risk" dataset showing G20 at-risk imports worth $468B</li>
-        <li>Added government response rankings</li>
-        <li>Aligned with ILO-Walk Free joint methodology</li>
-      </ul>
-    </div>
-    <div class="card-footer">
-      <div class="card-footer-left">
-        <span>&#128101; 9 members used this</span>
-        <span>&#11088; 4.5 / 5 usefulness</span>
-        <span>&#127760; Global scope</span>
-      </div>
-      <span>&#128279; walkfree.org</span>
-    </div>
-  </div>
-
-  <!-- SECTION: ENVIRONMENTAL -->
-  <div class="section-label">Environmental Risk Sources</div>
-
-  <!-- Card 4 -->
-  <div class="card" data-category="environment" data-verified="true">
-    <div class="card-top">
-      <div>
-        <div class="card-title">
-          <a href="#">WRI Aqueduct — Water Risk Atlas</a>
-          <span class="verified-badge"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Verified</span>
-        </div>
-        <div class="card-org">World Resources Institute</div>
-      </div>
-    </div>
-    <div class="card-desc">
-      Interactive mapping tool for water-related risks including water stress, flood risk, and drought severity. Map your supply chain locations against water risk indicators. Useful for CSRD and ESRS E3 water disclosures.
-    </div>
-    <div class="card-tags">
-      <span class="tag tag-environment">Water Stress</span>
-      <span class="tag tag-environment">Climate Risk</span>
-      <span class="tag tag-type">Interactive Map</span>
-      <span class="tag tag-type">Free</span>
-    </div>
-    <button class="changelog-toggle" onclick="toggleChangelog(this)">&#9660; Show highlights &amp; changes</button>
-    <div class="changelog-panel">
-      <h4>Highlights</h4>
-      <ul>
-        <li>Covers 13 water risk indicators across all river basins globally</li>
-        <li>Projections through 2080 under multiple climate scenarios</li>
-        <li>API available for integration into your own risk tools</li>
-        <li>Recently added groundwater depletion data</li>
-      </ul>
-    </div>
-    <div class="card-footer">
-      <div class="card-footer-left">
-        <span>&#128101; 6 members used this</span>
-        <span>&#11088; 4.7 / 5 usefulness</span>
-        <span>&#127760; Global scope</span>
-      </div>
-      <span>&#128279; wri.org/aqueduct</span>
-    </div>
-  </div>
-
-  <!-- Card 5 -->
-  <div class="card" data-category="environment" data-verified="true">
-    <div class="card-top">
-      <div>
-        <div class="card-title">
-          <a href="#">Global Forest Watch</a>
-          <span class="verified-badge"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Verified</span>
-        </div>
-        <div class="card-org">World Resources Institute</div>
-      </div>
-    </div>
-    <div class="card-desc">
-      Near-real-time monitoring of forests worldwide. Deforestation alerts, tree cover loss data, and commodity-linked deforestation risk maps. Critical for EUDR compliance and CSDDD environmental due diligence.
-    </div>
-    <div class="card-tags">
-      <span class="tag tag-environment">Deforestation</span>
-      <span class="tag tag-environment">Biodiversity</span>
-      <span class="tag tag-governance">EUDR</span>
-      <span class="tag tag-type">Monitoring Platform</span>
-      <span class="tag tag-type">Free</span>
-    </div>
-    <button class="changelog-toggle" onclick="toggleChangelog(this)">&#9660; Show highlights &amp; changes</button>
-    <div class="changelog-panel">
-      <h4>Highlights</h4>
-      <ul>
-        <li>Weekly deforestation alerts using satellite imagery</li>
-        <li>Commodity-specific risk dashboards (palm oil, soy, cattle, etc.)</li>
-        <li>Integration with EUDR geolocation requirements</li>
-        <li>Pro dashboard available for enterprise supply chain mapping</li>
-      </ul>
-    </div>
-    <div class="card-footer">
-      <div class="card-footer-left">
-        <span>&#128101; 5 members used this</span>
-        <span>&#11088; 4.4 / 5 usefulness</span>
-        <span>&#127760; Global scope</span>
-      </div>
-      <span>&#128279; globalforestwatch.org</span>
-    </div>
-  </div>
-
-  <!-- SECTION: GOVERNANCE & MULTI-TOPIC -->
-  <div class="section-label">Governance &amp; Multi-Topic</div>
-
-  <!-- Card 6 -->
-  <div class="card" data-category="governance" data-verified="true">
-    <div class="card-top">
-      <div>
-        <div class="card-title">
-          <a href="#">Transparency International — Corruption Perceptions Index</a>
-          <span class="verified-badge"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Verified</span>
-        </div>
-        <div class="card-org">Transparency International</div>
-      </div>
-      <span class="changelog-badge">Updated Jan 2025</span>
-    </div>
-    <div class="card-desc">
-      Annual ranking of 180 countries by perceived levels of public sector corruption. Widely used as a governance risk indicator for country-level due diligence. Often combined with other indices for composite risk scoring.
-    </div>
-    <div class="card-tags">
-      <span class="tag tag-governance">Corruption</span>
-      <span class="tag tag-governance">Governance</span>
-      <span class="tag tag-type">Index / Ranking</span>
-      <span class="tag tag-type">Free</span>
-    </div>
-    <button class="changelog-toggle" onclick="toggleChangelog(this)">&#9660; Show highlights &amp; changes</button>
-    <div class="changelog-panel">
-      <h4>Highlights &amp; Changes vs 2023</h4>
-      <ul>
-        <li>180 countries scored on 0-100 scale</li>
-        <li>2024: global average remains stagnant at 43/100</li>
-        <li>Notable declines in several European countries</li>
-        <li>Useful combined with World Bank Governance Indicators</li>
-      </ul>
-    </div>
-    <div class="card-footer">
-      <div class="card-footer-left">
-        <span>&#128101; 8 members used this</span>
-        <span>&#11088; 4.3 / 5 usefulness</span>
-        <span>&#127760; Global scope</span>
-      </div>
-      <span>&#128279; transparency.org/cpi</span>
-    </div>
-  </div>
-
-  <!-- Card 7 — NOT verified -->
-  <div class="card" data-category="governance" data-verified="false">
-    <div class="card-top">
-      <div>
-        <div class="card-title">
-          <a href="#">INFORM Risk Index</a>
-        </div>
-        <div class="card-org">European Commission &middot; Joint Research Centre</div>
-      </div>
-    </div>
-    <div class="card-desc">
-      Composite risk index covering hazard & exposure, vulnerability, and lack of coping capacity for 191 countries. Useful for overall country-level risk profiling beyond just ESG-specific risks. Free and open data.
-    </div>
-    <div class="card-tags">
-      <span class="tag tag-general">Multi-risk</span>
-      <span class="tag tag-governance">Governance</span>
-      <span class="tag tag-type">Composite Index</span>
-      <span class="tag tag-type">Free</span>
-    </div>
-    <div class="card-footer">
-      <div class="card-footer-left">
-        <span>&#128101; 2 members used this</span>
-        <span>&#11088; Not yet rated</span>
-        <span>&#127760; Global scope</span>
-      </div>
-      <span>&#128279; drmkc.jrc.ec.europa.eu</span>
-    </div>
-  </div>
-
-  <!-- Card 8 — NOT verified -->
-  <div class="card" data-category="labor" data-verified="false">
-    <div class="card-top">
-      <div>
-        <div class="card-title">
-          <a href="#">ITUC Global Rights Index</a>
-        </div>
-        <div class="card-org">International Trade Union Confederation</div>
-      </div>
-      <span class="changelog-badge">Updated Jun 2024</span>
-    </div>
-    <div class="card-desc">
-      Annual survey ranking 149 countries on the degree to which workers' rights are respected. Rates countries 1-5+ on violations including right to strike, collective bargaining, and freedom of association. Valuable for labour rights risk screening.
-    </div>
-    <div class="card-tags">
-      <span class="tag tag-labor">Workers' Rights</span>
-      <span class="tag tag-labor">Freedom of Association</span>
-      <span class="tag tag-type">Index / Ranking</span>
-      <span class="tag tag-type">Free</span>
-    </div>
-    <div class="card-footer">
-      <div class="card-footer-left">
-        <span>&#128101; 3 members used this</span>
-        <span>&#11088; 4.1 / 5 usefulness</span>
-        <span>&#127760; Global scope</span>
-      </div>
-      <span>&#128279; ituc-csi.org</span>
+  <!-- DYNAMIC CARDS CONTAINER -->
+  <div id="cards-container">
+    <div class="loading-state">
+      <div class="loading-spinner"></div>
+      Loading sources from Notion...
     </div>
   </div>
 
@@ -689,6 +419,180 @@
 
 <script>
   let activeFilter = 'all';
+  const VERIFIED_SVG = '<svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>';
+
+  // Map Notion category names to CSS classes and filter keys
+  const CATEGORY_MAP = {
+    'Labour':         { css: 'tag-labor',       filter: 'labor' },
+    'Labour & Human Rights': { css: 'tag-labor', filter: 'labor' },
+    'Human Rights':   { css: 'tag-labor',       filter: 'labor' },
+    'Forced Labour':  { css: 'tag-labor',       filter: 'labor' },
+    'Child Labour':   { css: 'tag-labor',       filter: 'labor' },
+    'Modern Slavery': { css: 'tag-labor',       filter: 'labor' },
+    'Workers\' Rights': { css: 'tag-labor',     filter: 'labor' },
+    'Freedom of Association': { css: 'tag-labor', filter: 'labor' },
+    'Environment':    { css: 'tag-environment', filter: 'environment' },
+    'Water Stress':   { css: 'tag-environment', filter: 'environment' },
+    'Climate Risk':   { css: 'tag-environment', filter: 'environment' },
+    'Deforestation':  { css: 'tag-environment', filter: 'environment' },
+    'Biodiversity':   { css: 'tag-environment', filter: 'environment' },
+    'Governance':     { css: 'tag-governance',  filter: 'governance' },
+    'Corruption':     { css: 'tag-governance',  filter: 'governance' },
+    'Fair Business':  { css: 'tag-governance',  filter: 'governance' },
+    'EUDR':           { css: 'tag-governance',  filter: 'governance' },
+    'Multi-topic':    { css: 'tag-general',     filter: 'general' },
+    'Multi-risk':     { css: 'tag-general',     filter: 'general' },
+  };
+
+  // Determine the primary filter key for a source based on its categories
+  function getPrimaryFilter(categories) {
+    const priority = ['labor', 'environment', 'governance', 'general'];
+    for (const p of priority) {
+      for (const cat of categories) {
+        const mapped = CATEGORY_MAP[cat];
+        if (mapped && mapped.filter === p) return p;
+      }
+    }
+    return 'general';
+  }
+
+  function getCategoryClass(cat) {
+    return CATEGORY_MAP[cat] ? CATEGORY_MAP[cat].css : 'tag-general';
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function formatDate(dateStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+  }
+
+  // Group sources into sections by primary category
+  function groupSources(sources) {
+    const sections = {
+      labor: { label: 'Legislation-Linked & High Priority', sources: [] },
+      environment: { label: 'Environmental Risk Sources', sources: [] },
+      governance: { label: 'Governance & Multi-Topic', sources: [] },
+      general: { label: 'Other Sources', sources: [] },
+    };
+    for (const s of sources) {
+      const key = getPrimaryFilter(s.categories);
+      sections[key].sources.push(s);
+    }
+    return sections;
+  }
+
+  function renderCard(s) {
+    const isVerified = s.verificationStatus === 'Verified';
+    const primaryFilter = getPrimaryFilter(s.categories);
+    const allFilters = [...new Set(s.categories.map(c => CATEGORY_MAP[c]?.filter).filter(Boolean))].join(',');
+
+    const verifiedBadge = isVerified
+      ? `<span class="verified-badge">${VERIFIED_SVG} Verified</span>`
+      : '';
+
+    const updateBadge = s.lastUpdate
+      ? `<span class="changelog-badge">Updated ${formatDate(s.lastUpdate)}</span>`
+      : '';
+
+    const categoryTags = s.categories
+      .map(c => `<span class="tag ${getCategoryClass(c)}">${escapeHtml(c)}</span>`)
+      .join('');
+
+    const typeTags = [s.sourceType, s.cost]
+      .filter(Boolean)
+      .map(t => `<span class="tag tag-type">${escapeHtml(t)}</span>`)
+      .join('');
+
+    const ratingText = s.rating > 0 ? `&#11088; ${s.rating.toFixed(1)} / 5 usefulness` : '&#11088; Not yet rated';
+    const legislationText = s.legislation.length > 0 ? s.legislation.join(' &middot; ') : '';
+
+    let changelogHtml = '';
+    if (s.highlights) {
+      changelogHtml = `
+        <button class="changelog-toggle" onclick="toggleChangelog(this)">&#9660; Show highlights &amp; changes</button>
+        <div class="changelog-panel">
+          <h4>Highlights &amp; Changes</h4>
+          <p>${escapeHtml(s.highlights)}</p>
+        </div>`;
+    }
+
+    const titleLink = s.url
+      ? `<a href="${escapeHtml(s.url)}" target="_blank" rel="noopener">${escapeHtml(s.name)}</a>`
+      : escapeHtml(s.name);
+
+    return `
+      <div class="card" data-categories="${allFilters}" data-primary="${primaryFilter}" data-verified="${isVerified}">
+        <div class="card-top">
+          <div>
+            <div class="card-title">
+              ${titleLink}
+              ${verifiedBadge}
+            </div>
+            <div class="card-org">${escapeHtml(s.publisher)}</div>
+          </div>
+          ${updateBadge}
+        </div>
+        <div class="card-desc">${escapeHtml(s.description)}</div>
+        <div class="card-tags">${categoryTags}${typeTags}</div>
+        ${changelogHtml}
+        <div class="card-footer">
+          <div class="card-footer-left">
+            <span>&#128101; ${s.memberCount} members used this</span>
+            <span>${ratingText}</span>
+            <span>&#127760; ${escapeHtml(s.scope || 'Global')} scope</span>
+          </div>
+          ${legislationText ? `<span>${legislationText}</span>` : ''}
+        </div>
+      </div>`;
+  }
+
+  function renderCards(sources) {
+    const container = document.getElementById('cards-container');
+    const sections = groupSources(sources);
+    let html = '';
+
+    for (const [key, section] of Object.entries(sections)) {
+      if (section.sources.length === 0) continue;
+      html += `<div class="section-label">${escapeHtml(section.label)}</div>`;
+      for (const s of section.sources) {
+        html += renderCard(s);
+      }
+    }
+
+    container.innerHTML = html || '<div class="loading-state">No sources found.</div>';
+  }
+
+  function updateStats(stats) {
+    document.getElementById('stat-total').textContent = stats.total;
+    document.getElementById('stat-verified').textContent = stats.verified;
+    document.getElementById('stat-updated').textContent = stats.recentlyUpdated;
+    document.getElementById('stat-reviews').textContent = stats.totalReviews;
+    document.getElementById('header-total').innerHTML = `&#128218; ${stats.total} Sources`;
+    document.getElementById('header-verified').innerHTML = `&#9989; ${stats.verified} Community Verified`;
+  }
+
+  async function fetchSources() {
+    try {
+      const res = await fetch('/.netlify/functions/notion-sources');
+      if (!res.ok) throw new Error('Failed to load');
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      renderCards(data.sources);
+      updateStats(data.stats);
+    } catch (err) {
+      document.getElementById('cards-container').innerHTML = `
+        <div class="error-state">
+          <p>Unable to load sources. ${escapeHtml(err.message)}</p>
+          <button class="retry-btn" onclick="location.reload()">Retry</button>
+        </div>`;
+    }
+  }
 
   function setFilter(filter, btn) {
     activeFilter = filter;
@@ -701,15 +605,12 @@
     const query = document.getElementById('searchInput').value.toLowerCase();
     document.querySelectorAll('.card').forEach(card => {
       const text = card.textContent.toLowerCase();
-      const cat = card.dataset.category;
+      const categories = card.dataset.categories || '';
       const verified = card.dataset.verified === 'true';
 
       let matchFilter = activeFilter === 'all'
         || (activeFilter === 'verified' && verified)
-        || cat === activeFilter
-        || (activeFilter === 'labor' && cat === 'labor')
-        || (activeFilter === 'environment' && cat === 'environment')
-        || (activeFilter === 'governance' && cat === 'governance');
+        || categories.split(',').includes(activeFilter);
 
       let matchSearch = !query || text.includes(query);
       card.style.display = (matchFilter && matchSearch) ? '' : 'none';
@@ -723,6 +624,8 @@
       ? '&#9650; Hide highlights & changes'
       : '&#9660; Show highlights & changes';
   }
+
+  document.addEventListener('DOMContentLoaded', fetchSources);
 </script>
 
 </body>
