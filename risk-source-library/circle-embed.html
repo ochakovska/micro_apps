@@ -1,0 +1,477 @@
+<style>
+  .rsl-wrap {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #2d3436;
+    line-height: 1.6;
+    max-width: 100%;
+  }
+  .rsl-wrap * { box-sizing: border-box; }
+
+  .rsl-section {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #636e72;
+    margin: 28px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #e8f5ec;
+  }
+
+  .rsl-card {
+    background: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #dfe6e9;
+    padding: 20px;
+    margin-bottom: 12px;
+  }
+
+  .rsl-card-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .rsl-card-title a {
+    color: #1a5632;
+    text-decoration: none;
+  }
+  .rsl-card-title a:hover {
+    text-decoration: underline;
+  }
+
+  .rsl-badge-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+  }
+
+  .rsl-verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: #e8f8ef;
+    color: #27ae60;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+
+  .rsl-updated {
+    background: #fff8e1;
+    color: #f59e0b;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+
+  .rsl-org {
+    font-size: 0.83rem;
+    color: #636e72;
+    margin-bottom: 8px;
+  }
+
+  .rsl-desc {
+    font-size: 0.9rem;
+    color: #4a5568;
+    margin-bottom: 12px;
+    line-height: 1.55;
+  }
+
+  .rsl-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 12px;
+  }
+  .rsl-tag {
+    font-size: 0.73rem;
+    font-weight: 500;
+    padding: 2px 9px;
+    border-radius: 20px;
+  }
+  .rsl-tag-labor { background: #fde8e3; color: #e17055; }
+  .rsl-tag-env { background: #e3f2fd; color: #0984e3; }
+  .rsl-tag-gov { background: #ede7f6; color: #6c5ce7; }
+  .rsl-tag-gen { background: #e0f7f0; color: #00b894; }
+  .rsl-tag-type { background: #f0f0f0; color: #555; }
+
+  .rsl-details {
+    margin-top: 10px;
+  }
+  .rsl-details summary {
+    font-size: 0.82rem;
+    color: #1a5632;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  .rsl-details summary:hover { text-decoration: underline; }
+  .rsl-details-content {
+    background: #fafbfc;
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-top: 8px;
+    font-size: 0.83rem;
+    line-height: 1.6;
+    color: #4a5568;
+  }
+  .rsl-details-content ul {
+    padding-left: 18px;
+    margin: 4px 0 0;
+  }
+  .rsl-details-content li { margin-bottom: 3px; }
+  .rsl-details-content strong { color: #2d3436; }
+
+  .rsl-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 10px;
+    border-top: 1px solid #f0f0f0;
+    font-size: 0.8rem;
+    color: #636e72;
+  }
+  .rsl-footer-stats {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .rsl-legend {
+    background: #f8f9fa;
+    border: 1px solid #dfe6e9;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-top: 24px;
+    font-size: 0.82rem;
+    color: #636e72;
+  }
+  .rsl-legend strong { color: #2d3436; font-size: 0.83rem; }
+  .rsl-legend-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 6px;
+  }
+  .rsl-legend-item { display: flex; align-items: center; gap: 5px; }
+
+  .rsl-cta {
+    background: #e8f5ec;
+    border: 1.5px dashed #1a5632;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    margin-top: 24px;
+  }
+  .rsl-cta strong { color: #1a5632; font-size: 1rem; }
+  .rsl-cta p { font-size: 0.88rem; color: #636e72; margin: 4px 0 0; }
+</style>
+
+<div class="rsl-wrap">
+
+<!-- SECTION: LEGISLATION-LINKED -->
+<div class="rsl-section">Legislation-Linked &amp; High Priority</div>
+
+<!-- US DOL -->
+<div class="rsl-card">
+  <div class="rsl-card-title">
+    <a href="https://www.dol.gov/agencies/ilab/reports/child-labor/list-of-goods" target="_blank" rel="noopener">US DOL — List of Goods Produced by Child Labor or Forced Labor &#8599;</a>
+  </div>
+  <div class="rsl-badge-row">
+    <span class="rsl-verified">&#10003; Verified</span>
+    <span class="rsl-updated">Updated Sep 2024</span>
+  </div>
+  <div class="rsl-org">U.S. Department of Labor &middot; Bureau of International Labor Affairs</div>
+  <div class="rsl-desc">Comprehensive list of goods and source countries produced by child labor or forced labor. Covers 159 goods from 78 countries. Essential for supply chain risk screening.</div>
+  <div class="rsl-tags">
+    <span class="rsl-tag rsl-tag-labor">Forced Labour</span>
+    <span class="rsl-tag rsl-tag-labor">Child Labour</span>
+    <span class="rsl-tag rsl-tag-type">Database / List</span>
+    <span class="rsl-tag rsl-tag-type">Free</span>
+  </div>
+  <details class="rsl-details">
+    <summary>Highlights &amp; changes vs previous edition</summary>
+    <div class="rsl-details-content">
+      <ul>
+        <li><strong>Sep 2024:</strong> Added 7 new goods, updated 12 country entries</li>
+        <li>Now includes cobalt (DRC) and lithium (multiple countries)</li>
+        <li>Strengthened methodology with ILO alignment</li>
+        <li>Interactive map tool added to online version</li>
+      </ul>
+    </div>
+  </details>
+  <div class="rsl-footer">
+    <div class="rsl-footer-stats">
+      <span>14 members used</span>
+      <span>&#11088; 4.8/5</span>
+      <span>Global scope</span>
+    </div>
+    <span>CSDDD &middot; LkSG &middot; CS3D</span>
+  </div>
+</div>
+
+<!-- CSR Risk Check -->
+<div class="rsl-card">
+  <div class="rsl-card-title">
+    <a href="https://www.mvorisicochecker.nl/en" target="_blank" rel="noopener">CSR Risk Check &#8599;</a>
+  </div>
+  <div class="rsl-badge-row">
+    <span class="rsl-verified">&#10003; Verified</span>
+  </div>
+  <div class="rsl-org">MVO Nederland (CSR Netherlands)</div>
+  <div class="rsl-desc">Free online tool mapping CSR risks per product, sector, and country. Covers human rights, environment, and fair business. Excellent starting point for initial risk identification.</div>
+  <div class="rsl-tags">
+    <span class="rsl-tag rsl-tag-labor">Human Rights</span>
+    <span class="rsl-tag rsl-tag-env">Environment</span>
+    <span class="rsl-tag rsl-tag-gov">Fair Business</span>
+    <span class="rsl-tag rsl-tag-type">Online Tool</span>
+    <span class="rsl-tag rsl-tag-type">Free</span>
+  </div>
+  <details class="rsl-details">
+    <summary>Highlights &amp; changes</summary>
+    <div class="rsl-details-content">
+      <ul>
+        <li>Aligned with OECD Guidelines and UNGPs</li>
+        <li>Covers 200+ product groups and 170+ countries</li>
+        <li>Useful for CSDDD Article 6 risk identification step</li>
+        <li>Recently added biodiversity-related risk indicators</li>
+      </ul>
+    </div>
+  </details>
+  <div class="rsl-footer">
+    <div class="rsl-footer-stats">
+      <span>11 members used</span>
+      <span>&#11088; 4.6/5</span>
+      <span>Global scope</span>
+    </div>
+    <span>CSDDD &middot; CSRD</span>
+  </div>
+</div>
+
+<!-- Global Slavery Index -->
+<div class="rsl-card">
+  <div class="rsl-card-title">
+    <a href="https://www.walkfree.org/global-slavery-index/" target="_blank" rel="noopener">Global Slavery Index &#8599;</a>
+  </div>
+  <div class="rsl-badge-row">
+    <span class="rsl-verified">&#10003; Verified</span>
+    <span class="rsl-updated">Updated 2023</span>
+  </div>
+  <div class="rsl-org">Walk Free Foundation &middot; Minderoo Foundation</div>
+  <div class="rsl-desc">Country-by-country estimates of modern slavery prevalence, government responses, and import risk. The Products section maps at-risk goods to importing countries — directly relevant for supply chain due diligence.</div>
+  <div class="rsl-tags">
+    <span class="rsl-tag rsl-tag-labor">Modern Slavery</span>
+    <span class="rsl-tag rsl-tag-labor">Forced Labour</span>
+    <span class="rsl-tag rsl-tag-type">Index / Report</span>
+    <span class="rsl-tag rsl-tag-type">Free</span>
+  </div>
+  <details class="rsl-details">
+    <summary>Highlights &amp; changes vs 2018 edition</summary>
+    <div class="rsl-details-content">
+      <ul>
+        <li>New "importing risk" dataset showing G20 at-risk imports worth $468B</li>
+        <li>Added government response rankings</li>
+        <li>Aligned with ILO-Walk Free joint methodology</li>
+      </ul>
+    </div>
+  </details>
+  <div class="rsl-footer">
+    <div class="rsl-footer-stats">
+      <span>9 members used</span>
+      <span>&#11088; 4.5/5</span>
+      <span>Global scope</span>
+    </div>
+    <span>CSDDD &middot; LkSG &middot; CS3D</span>
+  </div>
+</div>
+
+<!-- SECTION: ENVIRONMENTAL -->
+<div class="rsl-section">Environmental Risk Sources</div>
+
+<!-- WRI Aqueduct -->
+<div class="rsl-card">
+  <div class="rsl-card-title">
+    <a href="https://www.wri.org/aqueduct" target="_blank" rel="noopener">WRI Aqueduct — Water Risk Atlas &#8599;</a>
+  </div>
+  <div class="rsl-badge-row">
+    <span class="rsl-verified">&#10003; Verified</span>
+  </div>
+  <div class="rsl-org">World Resources Institute</div>
+  <div class="rsl-desc">Interactive mapping tool for water stress, flood risk, and drought severity. Map supply chain locations against water risk indicators. Useful for CSRD and ESRS E3 water disclosures.</div>
+  <div class="rsl-tags">
+    <span class="rsl-tag rsl-tag-env">Water Stress</span>
+    <span class="rsl-tag rsl-tag-env">Climate Risk</span>
+    <span class="rsl-tag rsl-tag-type">Interactive Map</span>
+    <span class="rsl-tag rsl-tag-type">Free</span>
+  </div>
+  <details class="rsl-details">
+    <summary>Highlights</summary>
+    <div class="rsl-details-content">
+      <ul>
+        <li>13 water risk indicators across all river basins globally</li>
+        <li>Projections through 2080 under multiple climate scenarios</li>
+        <li>API available for integration into your own risk tools</li>
+        <li>Recently added groundwater depletion data</li>
+      </ul>
+    </div>
+  </details>
+  <div class="rsl-footer">
+    <div class="rsl-footer-stats">
+      <span>6 members used</span>
+      <span>&#11088; 4.7/5</span>
+      <span>Global scope</span>
+    </div>
+    <span>CSRD &middot; CSDDD</span>
+  </div>
+</div>
+
+<!-- Global Forest Watch -->
+<div class="rsl-card">
+  <div class="rsl-card-title">
+    <a href="https://www.globalforestwatch.org/" target="_blank" rel="noopener">Global Forest Watch &#8599;</a>
+  </div>
+  <div class="rsl-badge-row">
+    <span class="rsl-verified">&#10003; Verified</span>
+  </div>
+  <div class="rsl-org">World Resources Institute</div>
+  <div class="rsl-desc">Near-real-time forest monitoring worldwide. Deforestation alerts, tree cover loss data, and commodity-linked deforestation risk maps. Critical for EUDR compliance and CSDDD environmental due diligence.</div>
+  <div class="rsl-tags">
+    <span class="rsl-tag rsl-tag-env">Deforestation</span>
+    <span class="rsl-tag rsl-tag-env">Biodiversity</span>
+    <span class="rsl-tag rsl-tag-gov">EUDR</span>
+    <span class="rsl-tag rsl-tag-type">Monitoring Platform</span>
+    <span class="rsl-tag rsl-tag-type">Free</span>
+  </div>
+  <details class="rsl-details">
+    <summary>Highlights</summary>
+    <div class="rsl-details-content">
+      <ul>
+        <li>Weekly deforestation alerts via satellite imagery</li>
+        <li>Commodity-specific dashboards (palm oil, soy, cattle)</li>
+        <li>Integration with EUDR geolocation requirements</li>
+        <li>Pro dashboard for enterprise supply chain mapping</li>
+      </ul>
+    </div>
+  </details>
+  <div class="rsl-footer">
+    <div class="rsl-footer-stats">
+      <span>5 members used</span>
+      <span>&#11088; 4.4/5</span>
+      <span>Global scope</span>
+    </div>
+    <span>EUDR &middot; CSDDD</span>
+  </div>
+</div>
+
+<!-- SECTION: GOVERNANCE -->
+<div class="rsl-section">Governance &amp; Multi-Topic</div>
+
+<!-- TI CPI -->
+<div class="rsl-card">
+  <div class="rsl-card-title">
+    <a href="https://www.transparency.org/cpi" target="_blank" rel="noopener">Transparency International — Corruption Perceptions Index &#8599;</a>
+  </div>
+  <div class="rsl-badge-row">
+    <span class="rsl-verified">&#10003; Verified</span>
+    <span class="rsl-updated">Updated Jan 2025</span>
+  </div>
+  <div class="rsl-org">Transparency International</div>
+  <div class="rsl-desc">Annual ranking of 180 countries by perceived public sector corruption. Widely used as governance risk indicator for country-level due diligence. Often combined with other indices for composite risk scoring.</div>
+  <div class="rsl-tags">
+    <span class="rsl-tag rsl-tag-gov">Corruption</span>
+    <span class="rsl-tag rsl-tag-gov">Governance</span>
+    <span class="rsl-tag rsl-tag-type">Index / Ranking</span>
+    <span class="rsl-tag rsl-tag-type">Free</span>
+  </div>
+  <details class="rsl-details">
+    <summary>Highlights &amp; changes vs 2023</summary>
+    <div class="rsl-details-content">
+      <ul>
+        <li>180 countries scored 0-100</li>
+        <li>2024: global average stagnant at 43/100</li>
+        <li>Notable declines in several European countries</li>
+        <li>Useful combined with World Bank Governance Indicators</li>
+      </ul>
+    </div>
+  </details>
+  <div class="rsl-footer">
+    <div class="rsl-footer-stats">
+      <span>8 members used</span>
+      <span>&#11088; 4.3/5</span>
+      <span>Global scope</span>
+    </div>
+    <span>CSDDD &middot; LkSG</span>
+  </div>
+</div>
+
+<!-- INFORM -->
+<div class="rsl-card">
+  <div class="rsl-card-title">
+    <a href="https://drmkc.jrc.ec.europa.eu/inform-index" target="_blank" rel="noopener">INFORM Risk Index &#8599;</a>
+  </div>
+  <div class="rsl-org">European Commission &middot; Joint Research Centre</div>
+  <div class="rsl-desc">Composite risk index covering hazard, vulnerability, and lack of coping capacity for 191 countries. Useful for overall country-level risk profiling beyond ESG-specific risks. Free and open data.</div>
+  <div class="rsl-tags">
+    <span class="rsl-tag rsl-tag-gen">Multi-risk</span>
+    <span class="rsl-tag rsl-tag-gov">Governance</span>
+    <span class="rsl-tag rsl-tag-type">Composite Index</span>
+    <span class="rsl-tag rsl-tag-type">Free</span>
+  </div>
+  <div class="rsl-footer">
+    <div class="rsl-footer-stats">
+      <span>2 members used</span>
+      <span>Not yet rated</span>
+      <span>Global scope</span>
+    </div>
+    <span>CSDDD</span>
+  </div>
+</div>
+
+<!-- ITUC -->
+<div class="rsl-card">
+  <div class="rsl-card-title">
+    <a href="https://www.ituc-csi.org/ituc-global-rights-index-2024" target="_blank" rel="noopener">ITUC Global Rights Index &#8599;</a>
+  </div>
+  <div class="rsl-badge-row">
+    <span class="rsl-updated">Updated Jun 2024</span>
+  </div>
+  <div class="rsl-org">International Trade Union Confederation</div>
+  <div class="rsl-desc">Annual ranking of 149 countries on workers' rights. Rates countries 1-5+ on violations including right to strike, collective bargaining, and freedom of association. Valuable for labour rights risk screening.</div>
+  <div class="rsl-tags">
+    <span class="rsl-tag rsl-tag-labor">Workers' Rights</span>
+    <span class="rsl-tag rsl-tag-labor">Freedom of Association</span>
+    <span class="rsl-tag rsl-tag-type">Index / Ranking</span>
+    <span class="rsl-tag rsl-tag-type">Free</span>
+  </div>
+  <div class="rsl-footer">
+    <div class="rsl-footer-stats">
+      <span>3 members used</span>
+      <span>&#11088; 4.1/5</span>
+      <span>Global scope</span>
+    </div>
+    <span>CSDDD &middot; LkSG</span>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="rsl-legend">
+  <strong>How this works</strong>
+  <div class="rsl-legend-items">
+    <div class="rsl-legend-item"><span class="rsl-verified">&#10003; Verified</span> = 3+ members confirmed use</div>
+    <div class="rsl-legend-item"><span class="rsl-updated">Updated</span> = Recent changes noted</div>
+    <div class="rsl-legend-item">&#11088; = Avg usefulness rating</div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="rsl-cta">
+  <strong>Know a resource that should be here?</strong>
+  <p>Nominate a risk source you've found useful. Once 3+ members confirm professional use, it earns the "Verified" badge.</p>
+</div>
+
+</div>

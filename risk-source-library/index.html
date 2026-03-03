@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community Risk Source Library</title>
+<style>
+  :root {
+    --primary: #1a5632;
+    --primary-light: #e8f5ec;
+    --accent: #d4a017;
+    --bg: #f8f9fa;
+    --card-bg: #ffffff;
+    --text: #2d3436;
+    --text-muted: #636e72;
+    --border: #dfe6e9;
+    --verified: #27ae60;
+    --tag-env: #0984e3;
+    --tag-labor: #e17055;
+    --tag-gov: #6c5ce7;
+    --tag-gen: #00b894;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, #2d8659 100%);
+    color: white;
+    padding: 48px 24px 36px;
+    text-align: center;
+  }
+  .header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
+  .header p { font-size: 1.05rem; opacity: 0.9; max-width: 640px; margin: 0 auto 20px; }
+  .header-meta {
+    display: flex; gap: 24px; justify-content: center; flex-wrap: wrap;
+    font-size: 0.85rem; opacity: 0.8;
+  }
+  .header-meta span { display: flex; align-items: center; gap: 6px; }
+
+  /* FILTERS */
+  .filters {
+    max-width: 1100px; margin: -20px auto 0; padding: 0 20px; position: relative; z-index: 2;
+  }
+  .filter-bar {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+  }
+  .search-box {
+    flex: 1; min-width: 220px;
+    padding: 10px 14px 10px 38px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23636e72' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85zm-5.242.156a5 5 0 1 1 0-10 5 5 0 0 1 0 10z'/%3E%3C/svg%3E") 12px center no-repeat;
+    transition: border-color 0.2s;
+  }
+  .search-box:focus { outline: none; border-color: var(--primary); }
+  .filter-btn {
+    padding: 9px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    transition: all 0.2s;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--primary-light);
+  }
+
+  /* MAIN GRID */
+  .main { max-width: 1100px; margin: 28px auto; padding: 0 20px; }
+
+  .section-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin: 32px 0 14px;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    padding: 22px 24px;
+    margin-bottom: 14px;
+    transition: box-shadow 0.2s, border-color 0.2s;
+    cursor: default;
+  }
+  .card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    border-color: #b2bec3;
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title a { color: inherit; text-decoration: none; }
+  .card-title a:hover { color: var(--primary); }
+
+  .verified-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #e8f8ef;
+    color: var(--verified);
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .verified-badge svg { width: 13px; height: 13px; }
+
+  .card-org {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 4px 0 10px;
+  }
+
+  .card-desc {
+    font-size: 0.92rem;
+    color: #4a5568;
+    margin-bottom: 14px;
+    line-height: 1.55;
+  }
+
+  .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .tag {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .tag-environment { background: #e3f2fd; color: var(--tag-env); }
+  .tag-labor { background: #fde8e3; color: var(--tag-labor); }
+  .tag-governance { background: #ede7f6; color: var(--tag-gov); }
+  .tag-general { background: #e0f7f0; color: var(--tag-gen); }
+  .tag-type {
+    background: #f0f0f0; color: #555;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+  .card-footer-left { display: flex; gap: 18px; flex-wrap: wrap; }
+  .card-footer span { display: flex; align-items: center; gap: 4px; }
+
+  .changelog-badge {
+    background: #fff8e1;
+    color: #f59e0b;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  /* CHANGELOG PANEL (collapsed by default) */
+  .changelog-toggle {
+    font-size: 0.82rem;
+    color: var(--primary);
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-weight: 500;
+    padding: 0;
+    margin-top: 10px;
+  }
+  .changelog-toggle:hover { text-decoration: underline; }
+  .changelog-panel {
+    display: none;
+    background: #fafbfc;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-top: 10px;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: #4a5568;
+  }
+  .changelog-panel.open { display: block; }
+  .changelog-panel h4 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .changelog-panel ul {
+    padding-left: 18px;
+    margin: 0;
+  }
+  .changelog-panel li { margin-bottom: 4px; }
+
+  /* COMMUNITY STATS SIDEBAR */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+  .stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    text-align: center;
+  }
+  .stat-number {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary);
+  }
+  .stat-label {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* SUGGEST CTA */
+  .suggest-cta {
+    background: linear-gradient(135deg, var(--primary-light) 0%, #d4edda 100%);
+    border: 1.5px dashed var(--primary);
+    border-radius: 10px;
+    padding: 24px;
+    text-align: center;
+    margin-top: 32px;
+  }
+  .suggest-cta h3 { color: var(--primary); margin-bottom: 6px; font-size: 1.05rem; }
+  .suggest-cta p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 14px; }
+  .suggest-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .suggest-btn:hover { background: #14432a; }
+
+  /* LEGEND */
+  .legend {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-top: 24px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+  .legend h4 { font-size: 0.82rem; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+  .legend-items { display: flex; flex-wrap: wrap; gap: 16px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    .header h1 { font-size: 1.5rem; }
+    .filter-bar { flex-direction: column; }
+    .search-box { min-width: 100%; }
+    .card-top { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>Community Risk Source Library</h1>
+  <p>Curated risk assessment resources verified by sustainability professionals. Your starting point for due diligence under CSDDD, CS3D, and related legislation.</p>
+  <div class="header-meta">
+    <span>&#128218; 12 Sources</span>
+    <span>&#9989; 8 Community Verified</span>
+    <span>&#128197; Last updated: Feb 2026</span>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div class="filters">
+  <div class="filter-bar">
+    <input type="text" class="search-box" placeholder="Search sources, topics, publishers..." id="searchInput" oninput="filterCards()">
+    <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+    <button class="filter-btn" onclick="setFilter('labor', this)">Labour &amp; Human Rights</button>
+    <button class="filter-btn" onclick="setFilter('environment', this)">Environment</button>
+    <button class="filter-btn" onclick="setFilter('governance', this)">Governance</button>
+    <button class="filter-btn" onclick="setFilter('verified', this)">&#9989; Verified Only</button>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="main">
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-number">12</div>
+      <div class="stat-label">Total Sources</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">8</div>
+      <div class="stat-label">Community Verified</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">4</div>
+      <div class="stat-label">Updated in 2025/26</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">47</div>
+      <div class="stat-label">Member Reviews</div>
+    </div>
+  </div>
+
+  <!-- SECTION: HIGH-PRIORITY / LEGISLATION-LINKED -->
+  <div class="section-label">Legislation-Linked &amp; High Priority</div>
+
+  <!-- Card 1 -->
+  <div class="card" data-category="labor" data-verified="true">
+    <div class="card-top">
+      <div>
+        <div class="card-title">
+          <a href="#">US DOL — List of Goods Produced by Child Labor or Forced Labor</a>
+          <span class="verified-badge"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Verified</span>
+        </div>
+        <div class="card-org">U.S. Department of Labor &middot; Bureau of International Labor Affairs</div>
+      </div>
+      <span class="changelog-badge">Updated Sep 2024</span>
+    </div>
+    <div class="card-desc">
+      Comprehensive list of goods and their source countries where there is reason to believe they are produced by child labor or forced labor. Covers 159 goods from 78 countries. Essential reference for supply chain risk screening.
+    </div>
+    <div class="card-tags">
+      <span class="tag tag-labor">Forced Labour</span>
+      <span class="tag tag-labor">Child Labour</span>
+      <span class="tag tag-type">Database / List</span>
+      <span class="tag tag-type">Free</span>
+    </div>
+    <button class="changelog-toggle" onclick="toggleChangelog(this)">&#9660; Show highlights &amp; changes</button>
+    <div class="changelog-panel">
+      <h4>Highlights &amp; Changes vs Previous Edition</h4>
+      <ul>
+        <li><strong>Sep 2024 update:</strong> Added 7 new goods, updated 12 country entries</li>
+        <li>Now includes cobalt (DRC) and lithium (multiple countries)</li>
+        <li>Strengthened methodology section with ILO alignment</li>
+        <li>Interactive map tool added to the online version</li>
+      </ul>
+    </div>
+    <div class="card-footer">
+      <div class="card-footer-left">
+        <span>&#128101; 14 members used this</span>
+        <span>&#11088; 4.8 / 5 usefulness</span>
+        <span>&#127760; Global scope</span>
+      </div>
+      <span>&#128279; dol.gov/agencies/ilab</span>
+    </div>
+  </div>
+
+  <!-- Card 2 -->
+  <div class="card" data-category="general" data-verified="true">
+    <div class="card-top">
+      <div>
+        <div class="card-title">
+          <a href="#">CSR Risk Check</a>
+          <span class="verified-badge"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Verified</span>
+        </div>
+        <div class="card-org">MVO Nederland (CSR Netherlands)</div>
+      </div>
+    </div>
+    <div class="card-desc">
+      Free online tool that maps CSR risks per product, sector, and country. Covers human rights, environment, and fair business. Excellent starting point for initial risk identification before deep-dive assessments.
+    </div>
+    <div class="card-tags">
+      <span class="tag tag-labor">Human Rights</span>
+      <span class="tag tag-environment">Environment</span>
+      <span class="tag tag-governance">Fair Business</span>
+      <span class="tag tag-type">Online Tool</span>
+      <span class="tag tag-type">Free</span>
+    </div>
+    <button class="changelog-toggle" onclick="toggleChangelog(this)">&#9660; Show highlights &amp; changes</button>
+    <div class="changelog-panel">
+      <h4>Highlights &amp; Changes</h4>
+      <ul>
+        <li>Aligned with OECD Guidelines and UNGPs</li>
+        <li>Covers 200+ product groups and 170+ countries</li>
+        <li>Useful for CSDDD Article 6 risk identification step</li>
+        <li>Recently added biodiversity-related risk indicators</li>
+      </ul>
+    </div>
+    <div class="card-footer">
+      <div class="card-footer-left">
+        <span>&#128101; 11 members used this</span>
+        <span>&#11088; 4.6 / 5 usefulness</span>
+        <span>&#127760; Global scope</span>
+      </div>
+      <span>&#128279; mvorisicochecker.nl</span>
+    </div>
+  </div>
+
+  <!-- Card 3 -->
+  <div class="card" data-category="labor" data-verified="true">
+    <div class="card-top">
+      <div>
+        <div class="card-title">
+          <a href="#">Global Slavery Index</a>
+          <span class="verified-badge"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Verified</span>
+        </div>
+        <div class="card-org">Walk Free Foundation &middot; Minderoo Foundation</div>
+      </div>
+      <span class="changelog-badge">Updated 2023</span>
+    </div>
+    <div class="card-desc">
+      Country-by-country estimates of modern slavery prevalence, government responses, and import risk. The "Products" section maps at-risk goods to importing countries — directly relevant for supply chain due diligence.
+    </div>
+    <div class="card-tags">
+      <span class="tag tag-labor">Modern Slavery</span>
+      <span class="tag tag-labor">Forced Labour</span>
+      <span class="tag tag-type">Index / Report</span>
+      <span class="tag tag-type">Free</span>
+    </div>
+    <button class="changelog-toggle" onclick="toggleChangelog(this)">&#9660; Show highlights &amp; changes</button>
+    <div class="changelog-panel">
+      <h4>Highlights &amp; Changes vs 2018 Edition</h4>
+      <ul>
+        <li>Expanded to 160 countries (from 167 in 2018, methodology refined)</li>
+        <li>New "importing risk" dataset showing G20 at-risk imports worth $468B</li>
+        <li>Added government response rankings</li>
+        <li>Aligned with ILO-Walk Free joint methodology</li>
+      </ul>
+    </div>
+    <div class="card-footer">
+      <div class="card-footer-left">
+        <span>&#128101; 9 members used this</span>
+        <span>&#11088; 4.5 / 5 usefulness</span>
+        <span>&#127760; Global scope</span>
+      </div>
+      <span>&#128279; walkfree.org</span>
+    </div>
+  </div>
+
+  <!-- SECTION: ENVIRONMENTAL -->
+  <div class="section-label">Environmental Risk Sources</div>
+
+  <!-- Card 4 -->
+  <div class="card" data-category="environment" data-verified="true">
+    <div class="card-top">
+      <div>
+        <div class="card-title">
+          <a href="#">WRI Aqueduct — Water Risk Atlas</a>
+          <span class="verified-badge"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Verified</span>
+        </div>
+        <div class="card-org">World Resources Institute</div>
+      </div>
+    </div>
+    <div class="card-desc">
+      Interactive mapping tool for water-related risks including water stress, flood risk, and drought severity. Map your supply chain locations against water risk indicators. Useful for CSRD and ESRS E3 water disclosures.
+    </div>
+    <div class="card-tags">
+      <span class="tag tag-environment">Water Stress</span>
+      <span class="tag tag-environment">Climate Risk</span>
+      <span class="tag tag-type">Interactive Map</span>
+      <span class="tag tag-type">Free</span>
+    </div>
+    <button class="changelog-toggle" onclick="toggleChangelog(this)">&#9660; Show highlights &amp; changes</button>
+    <div class="changelog-panel">
+      <h4>Highlights</h4>
+      <ul>
+        <li>Covers 13 water risk indicators across all river basins globally</li>
+        <li>Projections through 2080 under multiple climate scenarios</li>
+        <li>API available for integration into your own risk tools</li>
+        <li>Recently added groundwater depletion data</li>
+      </ul>
+    </div>
+    <div class="card-footer">
+      <div class="card-footer-left">
+        <span>&#128101; 6 members used this</span>
+        <span>&#11088; 4.7 / 5 usefulness</span>
+        <span>&#127760; Global scope</span>
+      </div>
+      <span>&#128279; wri.org/aqueduct</span>
+    </div>
+  </div>
+
+  <!-- Card 5 -->
+  <div class="card" data-category="environment" data-verified="true">
+    <div class="card-top">
+      <div>
+        <div class="card-title">
+          <a href="#">Global Forest Watch</a>
+          <span class="verified-badge"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Verified</span>
+        </div>
+        <div class="card-org">World Resources Institute</div>
+      </div>
+    </div>
+    <div class="card-desc">
+      Near-real-time monitoring of forests worldwide. Deforestation alerts, tree cover loss data, and commodity-linked deforestation risk maps. Critical for EUDR compliance and CSDDD environmental due diligence.
+    </div>
+    <div class="card-tags">
+      <span class="tag tag-environment">Deforestation</span>
+      <span class="tag tag-environment">Biodiversity</span>
+      <span class="tag tag-governance">EUDR</span>
+      <span class="tag tag-type">Monitoring Platform</span>
+      <span class="tag tag-type">Free</span>
+    </div>
+    <button class="changelog-toggle" onclick="toggleChangelog(this)">&#9660; Show highlights &amp; changes</button>
+    <div class="changelog-panel">
+      <h4>Highlights</h4>
+      <ul>
+        <li>Weekly deforestation alerts using satellite imagery</li>
+        <li>Commodity-specific risk dashboards (palm oil, soy, cattle, etc.)</li>
+        <li>Integration with EUDR geolocation requirements</li>
+        <li>Pro dashboard available for enterprise supply chain mapping</li>
+      </ul>
+    </div>
+    <div class="card-footer">
+      <div class="card-footer-left">
+        <span>&#128101; 5 members used this</span>
+        <span>&#11088; 4.4 / 5 usefulness</span>
+        <span>&#127760; Global scope</span>
+      </div>
+      <span>&#128279; globalforestwatch.org</span>
+    </div>
+  </div>
+
+  <!-- SECTION: GOVERNANCE & MULTI-TOPIC -->
+  <div class="section-label">Governance &amp; Multi-Topic</div>
+
+  <!-- Card 6 -->
+  <div class="card" data-category="governance" data-verified="true">
+    <div class="card-top">
+      <div>
+        <div class="card-title">
+          <a href="#">Transparency International — Corruption Perceptions Index</a>
+          <span class="verified-badge"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Verified</span>
+        </div>
+        <div class="card-org">Transparency International</div>
+      </div>
+      <span class="changelog-badge">Updated Jan 2025</span>
+    </div>
+    <div class="card-desc">
+      Annual ranking of 180 countries by perceived levels of public sector corruption. Widely used as a governance risk indicator for country-level due diligence. Often combined with other indices for composite risk scoring.
+    </div>
+    <div class="card-tags">
+      <span class="tag tag-governance">Corruption</span>
+      <span class="tag tag-governance">Governance</span>
+      <span class="tag tag-type">Index / Ranking</span>
+      <span class="tag tag-type">Free</span>
+    </div>
+    <button class="changelog-toggle" onclick="toggleChangelog(this)">&#9660; Show highlights &amp; changes</button>
+    <div class="changelog-panel">
+      <h4>Highlights &amp; Changes vs 2023</h4>
+      <ul>
+        <li>180 countries scored on 0-100 scale</li>
+        <li>2024: global average remains stagnant at 43/100</li>
+        <li>Notable declines in several European countries</li>
+        <li>Useful combined with World Bank Governance Indicators</li>
+      </ul>
+    </div>
+    <div class="card-footer">
+      <div class="card-footer-left">
+        <span>&#128101; 8 members used this</span>
+        <span>&#11088; 4.3 / 5 usefulness</span>
+        <span>&#127760; Global scope</span>
+      </div>
+      <span>&#128279; transparency.org/cpi</span>
+    </div>
+  </div>
+
+  <!-- Card 7 — NOT verified -->
+  <div class="card" data-category="governance" data-verified="false">
+    <div class="card-top">
+      <div>
+        <div class="card-title">
+          <a href="#">INFORM Risk Index</a>
+        </div>
+        <div class="card-org">European Commission &middot; Joint Research Centre</div>
+      </div>
+    </div>
+    <div class="card-desc">
+      Composite risk index covering hazard & exposure, vulnerability, and lack of coping capacity for 191 countries. Useful for overall country-level risk profiling beyond just ESG-specific risks. Free and open data.
+    </div>
+    <div class="card-tags">
+      <span class="tag tag-general">Multi-risk</span>
+      <span class="tag tag-governance">Governance</span>
+      <span class="tag tag-type">Composite Index</span>
+      <span class="tag tag-type">Free</span>
+    </div>
+    <div class="card-footer">
+      <div class="card-footer-left">
+        <span>&#128101; 2 members used this</span>
+        <span>&#11088; Not yet rated</span>
+        <span>&#127760; Global scope</span>
+      </div>
+      <span>&#128279; drmkc.jrc.ec.europa.eu</span>
+    </div>
+  </div>
+
+  <!-- Card 8 — NOT verified -->
+  <div class="card" data-category="labor" data-verified="false">
+    <div class="card-top">
+      <div>
+        <div class="card-title">
+          <a href="#">ITUC Global Rights Index</a>
+        </div>
+        <div class="card-org">International Trade Union Confederation</div>
+      </div>
+      <span class="changelog-badge">Updated Jun 2024</span>
+    </div>
+    <div class="card-desc">
+      Annual survey ranking 149 countries on the degree to which workers' rights are respected. Rates countries 1-5+ on violations including right to strike, collective bargaining, and freedom of association. Valuable for labour rights risk screening.
+    </div>
+    <div class="card-tags">
+      <span class="tag tag-labor">Workers' Rights</span>
+      <span class="tag tag-labor">Freedom of Association</span>
+      <span class="tag tag-type">Index / Ranking</span>
+      <span class="tag tag-type">Free</span>
+    </div>
+    <div class="card-footer">
+      <div class="card-footer-left">
+        <span>&#128101; 3 members used this</span>
+        <span>&#11088; 4.1 / 5 usefulness</span>
+        <span>&#127760; Global scope</span>
+      </div>
+      <span>&#128279; ituc-csi.org</span>
+    </div>
+  </div>
+
+  <!-- SUGGEST -->
+  <div class="suggest-cta">
+    <h3>Know a resource that should be here?</h3>
+    <p>Nominate a risk source you've found useful. Once 3+ members confirm they've used it professionally, it earns the "Community Verified" badge.</p>
+    <button class="suggest-btn">&#43; Suggest a Source</button>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <h4>How this works</h4>
+    <div class="legend-items">
+      <div class="legend-item">
+        <span class="verified-badge"><svg viewBox="0 0 20 20" fill="currentColor" style="width:13px;height:13px"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg> Verified</span>
+        = 3+ members confirmed use
+      </div>
+      <div class="legend-item">
+        <span class="changelog-badge">Updated</span>
+        = Source has recent changes noted
+      </div>
+      <div class="legend-item">
+        &#11088; = Average usefulness rating by members
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let activeFilter = 'all';
+
+  function setFilter(filter, btn) {
+    activeFilter = filter;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    filterCards();
+  }
+
+  function filterCards() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    document.querySelectorAll('.card').forEach(card => {
+      const text = card.textContent.toLowerCase();
+      const cat = card.dataset.category;
+      const verified = card.dataset.verified === 'true';
+
+      let matchFilter = activeFilter === 'all'
+        || (activeFilter === 'verified' && verified)
+        || cat === activeFilter
+        || (activeFilter === 'labor' && cat === 'labor')
+        || (activeFilter === 'environment' && cat === 'environment')
+        || (activeFilter === 'governance' && cat === 'governance');
+
+      let matchSearch = !query || text.includes(query);
+      card.style.display = (matchFilter && matchSearch) ? '' : 'none';
+    });
+  }
+
+  function toggleChangelog(btn) {
+    const panel = btn.nextElementSibling;
+    panel.classList.toggle('open');
+    btn.innerHTML = panel.classList.contains('open')
+      ? '&#9650; Hide highlights & changes'
+      : '&#9660; Show highlights & changes';
+  }
+</script>
+
+</body>
+</html>
